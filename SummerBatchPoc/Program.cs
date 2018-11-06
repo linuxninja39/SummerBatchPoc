@@ -12,6 +12,7 @@ namespace SummerBatchPoc
         {
             Console.WriteLine("stuffz");
             JobExecution jobExecution = JobStarter.Start(GetJob(), new MyFirstBatchUnityLoader());
+//            JobExecution jobExecution = JobStarter.Start("Batch/MyFirstBatch.xml", new MyFirstBatchUnityLoader());
             Console.WriteLine("end stuffz");
         }
 
@@ -27,10 +28,12 @@ namespace SummerBatchPoc
                         Chunk = new XmlChunk
                         {
                             Reader = new XmlItemReader{ Ref = "FlatFileReader/FlatFileReader" },
-                            Processor = new XmlItemProcessor{Ref = "bob"},
-                            Writer = new XmlItemWriter{Ref = "bob"},
+                            Processor = new XmlItemProcessor{Ref = "FlatFileReader/Processor"},
+                            Writer = new XmlItemWriter{Ref = "FlatFileReader/DatabaseWriter"},
                             ItemCount = "1000"
-                        }
+                        },
+                        Id = "FlatFileReader",
+                        Transitions = new List<XmlTransitionElement>()
                     }
                 }
             };
